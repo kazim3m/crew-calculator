@@ -22,6 +22,7 @@ const labourModes: LabourMode[] = ['Labour Transport (2-way)', 'Truck In, Labour
 
 export function LabourFrameCard({ frame, calculation, index, onUpdate, onRemove }: LabourFrameCardProps) {
   const [isExpanded, setIsExpanded] = useState(true);
+  const today = new Date().toISOString().split('T')[0];
   
   const handleChange = (field: keyof LabourFrame, value: any) => {
     onUpdate({ ...frame, [field]: value });
@@ -62,6 +63,7 @@ export function LabourFrameCard({ frame, calculation, index, onUpdate, onRemove 
                 <Input
                   id={`labour-out-${frame.id}`}
                   type="date"
+                  min={today}
                   value={frame.outbound}
                   onChange={(e) => handleChange('outbound', e.target.value)}
                 />
@@ -71,6 +73,7 @@ export function LabourFrameCard({ frame, calculation, index, onUpdate, onRemove 
                 <Input
                   id={`labour-in-${frame.id}`}
                   type="date"
+                  min={frame.outbound || today}
                   value={frame.inbound}
                   onChange={(e) => handleChange('inbound', e.target.value)}
                 />

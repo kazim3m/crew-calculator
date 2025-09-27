@@ -20,6 +20,7 @@ interface CrewFrameCardProps {
 
 export function CrewFrameCard({ frame, calculation, index, onUpdate, onRemove }: CrewFrameCardProps) {
   const [isExpanded, setIsExpanded] = useState(true);
+  const today = new Date().toISOString().split('T')[0];
   
   const handleChange = (field: keyof CrewFrame, value: any) => {
     onUpdate({ ...frame, [field]: value });
@@ -60,6 +61,7 @@ export function CrewFrameCard({ frame, calculation, index, onUpdate, onRemove }:
                 <Input
                   id={`crew-out-${frame.id}`}
                   type="date"
+                  min={today}
                   value={frame.outbound}
                   onChange={(e) => handleChange('outbound', e.target.value)}
                 />
@@ -69,6 +71,7 @@ export function CrewFrameCard({ frame, calculation, index, onUpdate, onRemove }:
                 <Input
                   id={`crew-in-${frame.id}`}
                   type="date"
+                  min={frame.outbound || today}
                   value={frame.inbound}
                   onChange={(e) => handleChange('inbound', e.target.value)}
                 />
