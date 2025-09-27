@@ -99,30 +99,27 @@ export function calculateCrewFrame(frame: CrewFrame, location: EventLocation): C
 // -------------------
 export function calculateLabourFrame(frame: LabourFrame, location: EventLocation): LabourCalculation {
   const days = daysBetween(frame.outbound, frame.inbound);
+  const vansNeeded = Math.ceil(frame.count / 5); // 5 labourers per van
 
-  // 1. Per Diems
-  let perDiems = 0;
+  // 1. Per Diems (same logic as crew - per person per day)
+  const perDiems = days * frame.count;
+
+  // 2. Transport Trips (based on van capacity and mode)
+  let transportTrips = 0;
   if (frame.count > 0) {
     if (frame.mode === "Labour Transport (2-way)") {
-      perDiems = days * frame.count;
+      // Always 2 trips per day (inbound + outbound), van capacity = 5
+      transportTrips = 2 * days * vansNeeded;
     } else if (frame.mode === "Truck In, Labour Transport Out") {
-      perDiems = days * frame.count;
+      // Labour comes with truck, goes back by van - 1 trip per van
+      transportTrips = vansNeeded;
     } else if (frame.mode === "Truck (No Trip)") {
-      perDiems = 0;
+      // Came with truck, goes back with truck - no van trips
+      transportTrips = 0;
     }
   }
 
-  // 2. Transport Trips
-  let transportTrips = 0;
-  if (frame.mode === "Labour Transport (2-way)") {
-    transportTrips = 2 * frame.count;
-  } else if (frame.mode === "Truck In, Labour Transport Out") {
-    transportTrips = frame.count;
-  } else if (frame.mode === "Truck (No Trip)") {
-    transportTrips = 0;
-  }
-
-  // 3. Hotel Nights
+  // 3. Hotel Nights (only when hotel required is checked AND Outside Dubai)
   let hotelNights = 0;
   if (frame.hotelRequired && location === "Outside Dubai" && days > 0) {
     hotelNights = (days - 1) * frame.count;
