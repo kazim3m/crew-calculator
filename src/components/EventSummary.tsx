@@ -16,7 +16,7 @@ export function EventSummary({ totals }: EventSummaryProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
           <div className="text-center p-6 bg-secondary/30 rounded-xl border border-border">
             <Calendar className="w-8 h-8 mx-auto mb-3 text-primary" />
             <div className="text-2xl font-bold text-foreground">{totals.totalPerDiems}</div>
@@ -45,6 +45,12 @@ export function EventSummary({ totals }: EventSummaryProps) {
             <Truck className="w-8 h-8 mx-auto mb-3 text-info" />
             <div className="text-2xl font-bold text-foreground">{totals.totalLabourTrips}</div>
             <div className="text-sm text-muted-foreground">Labour Transport Trips</div>
+          </div>
+          
+          <div className="text-center p-6 bg-secondary/30 rounded-xl border border-border">
+            <Car className="w-8 h-8 mx-auto mb-3 text-blue-600" />
+            <div className="text-2xl font-bold text-foreground">{totals.totalCarsNeeded}</div>
+            <div className="text-sm text-muted-foreground">Cars Needed (Shared)</div>
           </div>
         </div>
       </CardContent>

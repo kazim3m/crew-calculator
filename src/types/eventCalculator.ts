@@ -42,4 +42,5 @@ export interface TotalCalculation {
   totalInnerTrips: number;
   totalOutsideTrips: number;
   totalLabourTrips: number;
+  totalCarsNeeded: number; // New field for cars needed based on crew sharing rules
 }

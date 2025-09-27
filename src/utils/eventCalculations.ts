@@ -8,8 +8,36 @@ export function daysBetween(outbound: string, inbound: string): number {
   return diffDays >= 0 ? diffDays + 1 : 0;
 }
 
+// Car sharing calculation based on crew members leaving on the same day
 export function carsNeeded(count: number): number {
   return Math.ceil(count / 2);
+}
+
+// Calculate cars needed for a specific outbound date
+export function calculateCarsForDate(crewCount: number): number {
+  // Mandatory Car Sharing: number of crew ÷ 2 rounded up to next integer
+  return Math.ceil(crewCount / 2);
+}
+
+// Calculate total cars needed across all crew frames based on car sharing requirements
+export function calculateTotalCarsNeeded(crewFrames: CrewFrame[]): number {
+  // Group crew by outbound date
+  const crewByDate = new Map<string, number>();
+  
+  crewFrames.forEach(frame => {
+    if (frame.count > 0) {
+      const currentCount = crewByDate.get(frame.outbound) || 0;
+      crewByDate.set(frame.outbound, currentCount + frame.count);
+    }
+  });
+  
+  // Calculate cars needed for each date and sum them up
+  let totalCars = 0;
+  crewByDate.forEach((crewCount) => {
+    totalCars += calculateCarsForDate(crewCount);
+  });
+  
+  return totalCars;
 }
 
 export function calculateCrewFrame(frame: CrewFrame, location: EventLocation): CrewCalculation {

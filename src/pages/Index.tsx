@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, Calculator, MapPin, FileDown } from 'lucide-react';
 import { CrewFrame, LabourFrame, EventLocation, TotalCalculation } from '@/types/eventCalculator';
-import { calculateCrewFrame, calculateLabourFrame } from '@/utils/eventCalculations';
+import { calculateCrewFrame, calculateLabourFrame, calculateTotalCarsNeeded } from '@/utils/eventCalculations';
 import { exportToPDF } from '@/utils/pdfExport';
 import { CrewFrameCard } from '@/components/CrewFrameCard';
 import { LabourFrameCard } from '@/components/LabourFrameCard';
@@ -120,6 +120,7 @@ const Index = () => {
     totalInnerTrips: crewCalculations.reduce((sum, calc) => sum + calc.innerTrips, 0),
     totalOutsideTrips: crewCalculations.reduce((sum, calc) => sum + calc.outsideTrips, 0),
     totalLabourTrips: labourCalculations.reduce((sum, calc) => sum + calc.transportTrips, 0),
+    totalCarsNeeded: calculateTotalCarsNeeded(crewFrames),
   };
 
   return (
