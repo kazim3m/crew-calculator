@@ -4,10 +4,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Plus, Calculator, MapPin, FileDown } from 'lucide-react';
+import { Plus, Calculator, MapPin, FileDown, FileSpreadsheet } from 'lucide-react';
 import { CrewFrame, LabourFrame, EventLocation, TotalCalculation } from '@/types/eventCalculator';
 import { calculateCrewFrame, calculateLabourFrame, calculateTotalCarsNeeded } from '@/utils/eventCalculations';
-import { exportToPDF } from '@/utils/pdfExport';
+import { exportToPDF, exportToExcel } from '@/utils/pdfExport';
 import { CrewFrameCard } from '@/components/CrewFrameCard';
 import { LabourFrameCard } from '@/components/LabourFrameCard';
 import { EventSummary } from '@/components/EventSummary';
@@ -104,6 +104,22 @@ const Index = () => {
     });
     toast({
       title: "PDF Generated",
+      description: "Event report has been exported successfully.",
+    });
+  };
+
+  const handleExportExcel = () => {
+    exportToExcel({
+      eventName,
+      eventLocation,
+      crewFrames,
+      labourFrames,
+      crewCalculations,
+      labourCalculations,
+      totals,
+    });
+    toast({
+      title: "Excel Generated",
       description: "Event report has been exported successfully.",
     });
   };
@@ -224,11 +240,15 @@ const Index = () => {
         {/* Summary */}
         <EventSummary totals={totals} />
 
-        {/* Export Button */}
-        <div className="flex justify-center">
+        {/* Export Buttons */}
+        <div className="flex justify-center gap-4">
           <Button onClick={handleExportPDF} size="lg" className="gap-2">
             <FileDown className="w-5 h-5" />
             Export as PDF
+          </Button>
+          <Button onClick={handleExportExcel} size="lg" variant="outline" className="gap-2">
+            <FileSpreadsheet className="w-5 h-5" />
+            Export as Excel
           </Button>
         </div>
       </div>
