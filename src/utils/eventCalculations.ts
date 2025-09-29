@@ -87,6 +87,7 @@ export function calculateCrewFrame(frame: CrewFrame, location: EventLocation): C
   }
 
   return {
+    crewCount: frame.count,
     perDiems,
     hotelNights,
     innerTrips,
@@ -126,6 +127,7 @@ export function calculateLabourFrame(frame: LabourFrame, location: EventLocation
   }
 
   return {
+    labourCount: frame.count,
     perDiems,
     hotelNights,
     transportTrips,

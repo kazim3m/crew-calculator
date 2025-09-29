@@ -24,6 +24,7 @@ export interface LabourFrame {
 }
 
 export interface CrewCalculation {
+  crewCount: number;
   perDiems: number;
   hotelNights: number;
   innerTrips: number;
@@ -31,12 +32,14 @@ export interface CrewCalculation {
 }
 
 export interface LabourCalculation {
+  labourCount: number;
   perDiems: number;
   hotelNights: number;
   transportTrips: number;
 }
 
 export interface TotalCalculation {
+  totalCrewCount: number;
   totalPerDiems: number;
   totalHotelNights: number;
   totalInnerTrips: number;

@@ -92,6 +92,24 @@ const Index = () => {
     }
   };
 
+  // ✅ First calculate everything
+  const crewCalculations = crewFrames.map(frame => calculateCrewFrame(frame, eventLocation));
+  const labourCalculations = labourFrames.map(frame => calculateLabourFrame(frame, eventLocation));
+
+  const totals: TotalCalculation = {
+    totalCrewCount: crewCalculations.reduce((sum, calc) => sum + calc.crewCount, 0) +
+                    labourCalculations.reduce((sum, calc) => sum + calc.labourCount, 0),
+    totalPerDiems: crewCalculations.reduce((sum, calc) => sum + calc.perDiems, 0) +
+                   labourCalculations.reduce((sum, calc) => sum + calc.perDiems, 0),
+    totalHotelNights: crewCalculations.reduce((sum, calc) => sum + calc.hotelNights, 0) +
+                      labourCalculations.reduce((sum, calc) => sum + calc.hotelNights, 0),
+    totalInnerTrips: crewCalculations.reduce((sum, calc) => sum + calc.innerTrips, 0),
+    totalOutsideTrips: crewCalculations.reduce((sum, calc) => sum + calc.outsideTrips, 0),
+    totalLabourTrips: labourCalculations.reduce((sum, calc) => sum + calc.transportTrips, 0),
+    totalCarsNeeded: calculateTotalCarsNeeded(crewFrames),
+  };
+
+  // ✅ Now define export handlers
   const handleExportPDF = () => {
     exportToPDF({
       eventName,
@@ -122,21 +140,6 @@ const Index = () => {
       title: "Excel Generated",
       description: "Event report has been exported successfully.",
     });
-  };
-
-  // Calculate totals
-  const crewCalculations = crewFrames.map(frame => calculateCrewFrame(frame, eventLocation));
-  const labourCalculations = labourFrames.map(frame => calculateLabourFrame(frame, eventLocation));
-
-  const totals: TotalCalculation = {
-    totalPerDiems: crewCalculations.reduce((sum, calc) => sum + calc.perDiems, 0) +
-                   labourCalculations.reduce((sum, calc) => sum + calc.perDiems, 0),
-    totalHotelNights: crewCalculations.reduce((sum, calc) => sum + calc.hotelNights, 0) +
-                      labourCalculations.reduce((sum, calc) => sum + calc.hotelNights, 0),
-    totalInnerTrips: crewCalculations.reduce((sum, calc) => sum + calc.innerTrips, 0),
-    totalOutsideTrips: crewCalculations.reduce((sum, calc) => sum + calc.outsideTrips, 0),
-    totalLabourTrips: labourCalculations.reduce((sum, calc) => sum + calc.transportTrips, 0),
-    totalCarsNeeded: calculateTotalCarsNeeded(crewFrames),
   };
 
   return (
@@ -236,17 +239,24 @@ const Index = () => {
             ))}
           </div>
         </div>
-
+    
         {/* Summary */}
         <EventSummary totals={totals} />
 
         {/* Export Buttons */}
         <div className="flex justify-center gap-4">
+          {/*
           <Button onClick={handleExportPDF} size="lg" className="gap-2">
             <FileDown className="w-5 h-5" />
             Export as PDF
           </Button>
-          <Button onClick={handleExportExcel} size="lg" variant="outline" className="gap-2">
+          */}
+          <Button
+            onClick={handleExportExcel}
+            size="lg"
+            variant="outline"
+            className="gap-2"
+          >
             <FileSpreadsheet className="w-5 h-5" />
             Export as Excel
           </Button>
